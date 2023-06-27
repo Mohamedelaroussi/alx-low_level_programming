@@ -1,5 +1,4 @@
 #include "main.h"
-
 /**
  * _strcpy - fuction copies the string pointed
  * @dest: pointer to copy the string to.
@@ -19,4 +18,3 @@ char *_strcpy(char *dest, char *src)
 	}
 	return (dest);
 }
-
