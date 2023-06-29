@@ -1,4 +1,5 @@
 #include "main.h"
+
 /**
  * print_buffer - add 2 strings.
  * @b: string1.
