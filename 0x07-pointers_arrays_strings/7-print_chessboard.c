@@ -1,23 +1,18 @@
-include "main.h"
+#include "main.h"
 
 /**
- * print_chessboard - prints a chestboard out and it's pieaces from a matrix;
- * @a: matrix of the board and pieces current location.
- *
- * Return: Nothing
+ * print_chessboard - Entry point
+ * @a: array
+ * return: Always 0 (success)
  */
 void print_chessboard(char (*a)[8])
 {
-	unsigned int i, b;
+	int 1, n;
 
-	for (i = 0 ; i < 8 ; i++)
+	for (i = 0; i < 8; i++)
 	{
-		for (b = 0 ; b < 8 ; b++)
-		{
-			_putchar(*((*a + i * 8) + b));
-		}
+		for (n = 0; n < 8; n++)
+		_putchar(a[i][n]);
 		_putchar('\n');
 	}
 }
-
-
