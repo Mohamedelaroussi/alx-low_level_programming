@@ -2,15 +2,14 @@
 #include <stdio.h>
 
 /**
- * main - Prints the name of the program
- * @argc: Number of command line arguments
- * @argv: Array name
+ * main -  writes its name
+ * @argc: arguement count
+ * @argv: array of pointers to arguement strings
  * Return: 0
- */
-
+ **/
 int main(int argc, char *argv[])
 {
-	printf("%s\n", argv[argc * 0]);
-
+	argc = argc;
+	printf("%s\n", *argv);
 	return (0);
 }
