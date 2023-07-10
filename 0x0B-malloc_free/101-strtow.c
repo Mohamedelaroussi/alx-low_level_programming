@@ -1,4 +1,4 @@
-#include "holberton.h"
+#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -41,5 +41,3 @@ char *argstostr(int ac, char **av)
 	str[length] = '\0';
 	return (str);
 }
-
-
