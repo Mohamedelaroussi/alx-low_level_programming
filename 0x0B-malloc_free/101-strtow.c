@@ -1,43 +1,75 @@
 #include "main.h"
-#include <stdio.h>
 #include <stdlib.h>
-
 /**
- * argstostr - this function  concatenates all the arguments of your program.
- * @ac: args count.
- * @av: arguments
- * Return: pointer to string.
- */
-char *argstostr(int ac, char **av)
+* wordCounterRec - count num of words recursively
+* @str: pointer to char
+* @i: current index
+* Return: number of words
+**/
+int wordCounterRec(char *str, int i)
 {
-	char *str, *temp;
-	int i, z, length;
+	if (str[i] == '\0')
+		return (0);
+	if (str[i] == ' ' && str[i + 1] != ' ' && str[i + 1] != '\0')
+		return (1 + wordCounterRec(str, i + 1));
+	return (wordCounterRec(str, i + 1));
+}
+/**
+* word_counter - counts number of words in 1d array of strings
+* @str: pointer to char
+* Return: number of words
+**/
+int word_counter(char *str)
+{
+	if (str[0] != ' ')
+		return (1 + wordCounterRec(str, 0));
+	return (wordCounterRec(str, 0));
+}
+/**
+* strtow - splits a string into words.
+* @str: string to be splitted
+* Return: pointer to an array of strings (words) or null
+**/
+char **strtow(char *str)
+{
+	char **strDup;
+	int i, n, m, words;
 
-	if (ac == 0 || av == NULL)
+	if (str == NULL || str[0] == 0)
 		return (NULL);
-	length = 0;
-	for (i = 0; i < ac; i++)
+	words = word_counter(str);
+	if (words < 1)
+		return (NULL);
+	strDup = malloc(sizeof(char *) * (words + 1));
+	if (strDup == NULL)
+		return (NULL);
+	i = 0;
+	while (i < words && *str != '\0')
 	{
-		temp = *(av + i);
-		for (z = 0; temp[z]; z++)
+		if (*str != ' ')
 		{
-			length++;
+			n = 0;
+			while (str[n] != ' ')
+				n++;
+			strDup[i] = malloc(sizeof(char) * (n + 1));
+			if (strDup[i] == NULL)
+			{
+				while (--i >= 0)
+					free(strDup[--i]);
+				free(strDup);
+				return (NULL);
+			}
+			m = 0;
+			while (m < n)
+			{
+				strDup[i][m] = *str;
+				m++, str++;
+			}
+			strDup[i][m] = '\0';
+			i++;
 		}
-		length += 1;
+		str++;
 	}
-	str = malloc(sizeof(char) * length + 1);
-	length = 0;
-	for (i = 0; i < ac; i++)
-	{
-		temp = *(av + i);
-		for (z = 0; temp[z]; ++z)
-		{
-			str[length] = temp[z];
-			length++;
-		}
-			str[length] = '\n';
-			length++;
-	}
-	str[length] = '\0';
-	return (str);
+	strDup[i] = '\0';
+	return (strDup);
 }
