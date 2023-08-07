@@ -1,49 +1,39 @@
 #include "main.h"
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
 
 /**
- * read_textfile - fuction that read a text file and print it out the POSIX std
- * out
- * @filename: body of text to print.
- * @letters: max char to print.
- * Return: number of chars printed.
+ * read_textfile - that reads a text file and prints
+ * @filename: variable pointer
+ * @letters: size letters
+ * Description: Write a function that reads a text file and prints it
+ * to the POSIX standard output.
+ * Return: the actual number of letters it could read and print, 0 otherwise
  */
+
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	int fd, err, rd;
-	char *buf;
+	ssize_t file, let, w;
+	char *text;
 
-	fd = err = rd = 0;
-	if (!filename || !letters)
-		return (0);
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
+	text = malloc(letters);
+	if (text == NULL)
 		return (0);
 
-	buf = malloc(sizeof(char) * letters + 1);
-	if (!buf)
+	if (filename == NULL)
 		return (0);
-	rd = read(fd, buf, letters);
-	if (rd < 0)
+
+	file = open(filename, O_RDONLY);
+
+	if (file == -1)
 	{
-		free(buf);
-		return (0);
-	}
-	buf[letters] = '\0';
-	err = write(STDOUT_FILENO, buf, rd);
-	if (err <= 0)
-	{
-		free(buf);
+		free(text);
 		return (0);
 	}
 
-	free(buf);
-	close(fd);
-	return (rd);
+	let = read(file, text, letters);
+
+	w = write(STDOUT_FILENO, text, let);
+
+	close(file);
+
+	return (w);
 }
-
-
