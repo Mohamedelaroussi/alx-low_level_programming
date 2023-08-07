@@ -1,36 +1,50 @@
-#include "mainn.h"
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+#include "main.h"
 
 /**
- * create_file - function that will create a new file and fill with with some
- * content.
- * @filename: name of the file to create.
- * @text_content: text to add to the new file.
+ * _strlen - compute the length of a NULL-terminated string
+ * @str: the string to measure
  *
- * Return: Always 1 on scucess, -1 on Failure
+ * Return: the length of str, or -1 if str is NULL
+ */
+ssize_t _strlen(const char *str)
+{
+	ssize_t len = 0;
+
+	if (!str)
+		return (-1);
+
+	while (*str++)
+		++len;
+
+	return (len);
+}
+
+/**
+ * create_file - create a file
+ * @filename: the name of the file to create
+ * @text_content: the data to write to filename
+ *
+ * Return: Upon success, return 1. Otherwise, return -1.
  */
 int create_file(const char *filename, char *text_content)
 {
-	int err, len, fd;
+	ssize_t b_written = 0;
+	int fd;
 
-	err = len = fd = 0;
 	if (!filename)
 		return (-1);
 
-	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR);
-		if (fd < 0)
-			return (-1);
-	while (text_content && text_content[len])
-		len++;
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 
-	err = write(fd, text_content, len);
-	if (err < 0)
+	if (fd < 0)
 		return (-1);
+
+	if (text_content)
+		b_written = write(fd, text_content, _strlen(text_content));
+
 	close(fd);
+
+	if (b_written < 0)
+		return (-1);
 	return (1);
 }
-
-
